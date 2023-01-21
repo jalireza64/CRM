@@ -1,0 +1,480 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="RaadeenSiteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="COMP_PRODUCT">
+          <Key>
+            <PropertyRef Name="COMP_CODE" />
+            <PropertyRef Name="PRD_ID" />
+          </Key>
+          <Property Name="COMP_CODE" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="PRD_ID" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <EntityType Name="COMPANY">
+          <Key>
+            <PropertyRef Name="COMP_CODE" />
+          </Key>
+          <Property Name="COMP_CODE" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="DESC1" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="CEO" Type="nvarchar" MaxLength="100" />
+          <Property Name="TEL_NO_1" Type="nchar" MaxLength="15" Nullable="false" />
+          <Property Name="TEL_NO_2" Type="nchar" MaxLength="15" />
+          <Property Name="FAX_NO" Type="nchar" MaxLength="15" />
+          <Property Name="CELL_PHONE" Type="nchar" MaxLength="15" />
+          <Property Name="RESP_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="E_MAIL" Type="nvarchar" MaxLength="100" />
+          <Property Name="WEBSITE" Type="nvarchar" MaxLength="50" />
+          <Property Name="ADDRESS" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="CONSISTENCE_USER" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="USER_ID" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRODUCTS">
+          <Key>
+            <PropertyRef Name="PRD_ID" />
+          </Key>
+          <Property Name="PRD_ID" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="USER_ID" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="SOFT_CODE" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SOFT_NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="datetime" />
+          <Property Name="PRD_PATH" Type="nvarchar" MaxLength="2000" />
+          <Property Name="PRD_NOTE" Type="ntext" />
+          <Property Name="FACILITIES" Type="ntext" />
+        </EntityType>
+        <EntityType Name="SALE_DETAIL">
+          <Key>
+            <PropertyRef Name="DET_ID" />
+          </Key>
+          <Property Name="DET_ID" Type="numeric" Precision="18" Scale="0" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DESC1" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="F_DATE" Type="nchar" MaxLength="8" Nullable="false" />
+          <Property Name="COMP_CODE" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="USER_ID" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="datetime" Nullable="false" />
+          <Property Name="PRD_ID" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="STATE" Type="nchar" MaxLength="2" />
+          <Property Name="FEE" Type="numeric" Precision="18" Scale="0" />
+          <Property Name="FOLLOW_DATE" Type="nchar" MaxLength="8" />
+        </EntityType>
+        <EntityType Name="SALE_USERS">
+          <Key>
+            <PropertyRef Name="USER_ID" />
+          </Key>
+          <Property Name="USER_ID" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="PASSWORD" Type="nvarchar" MaxLength="25" Nullable="false" />
+          <Property Name="NAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="SURNAME" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="TEL_NO_1" Type="nchar" MaxLength="15" />
+          <Property Name="CELL_PHONE" Type="nchar" MaxLength="15" Nullable="false" />
+          <Property Name="NOTE" Type="nvarchar" MaxLength="2000" />
+          <Property Name="USER_FLAG" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_COMP_PRODUCT_COMPANY">
+          <End Role="COMPANY" Type="Self.COMPANY" Multiplicity="1" />
+          <End Role="COMP_PRODUCT" Type="Self.COMP_PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMPANY">
+              <PropertyRef Name="COMP_CODE" />
+            </Principal>
+            <Dependent Role="COMP_PRODUCT">
+              <PropertyRef Name="COMP_CODE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COMP_PRODUCT_PRODUCTS">
+          <End Role="PRODUCTS" Type="Self.PRODUCTS" Multiplicity="1" />
+          <End Role="COMP_PRODUCT" Type="Self.COMP_PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCTS">
+              <PropertyRef Name="PRD_ID" />
+            </Principal>
+            <Dependent Role="COMP_PRODUCT">
+              <PropertyRef Name="PRD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COMPANY_SALE_USERS">
+          <End Role="SALE_USERS" Type="Self.SALE_USERS" Multiplicity="1" />
+          <End Role="COMPANY" Type="Self.COMPANY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SALE_USERS">
+              <PropertyRef Name="USER_ID" />
+            </Principal>
+            <Dependent Role="COMPANY">
+              <PropertyRef Name="USER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COMPANY_SALE_USERS1">
+          <End Role="SALE_USERS" Type="Self.SALE_USERS" Multiplicity="1" />
+          <End Role="COMPANY" Type="Self.COMPANY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SALE_USERS">
+              <PropertyRef Name="USER_ID" />
+            </Principal>
+            <Dependent Role="COMPANY">
+              <PropertyRef Name="CONSISTENCE_USER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SALE_DETAIL_COMP_PRODUCT">
+          <End Role="COMP_PRODUCT" Type="Self.COMP_PRODUCT" Multiplicity="1" />
+          <End Role="SALE_DETAIL" Type="Self.SALE_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMP_PRODUCT">
+              <PropertyRef Name="COMP_CODE" />
+              <PropertyRef Name="PRD_ID" />
+            </Principal>
+            <Dependent Role="SALE_DETAIL">
+              <PropertyRef Name="COMP_CODE" />
+              <PropertyRef Name="PRD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SALE_DETAIL_SALE_USERS">
+          <End Role="SALE_USERS" Type="Self.SALE_USERS" Multiplicity="1" />
+          <End Role="SALE_DETAIL" Type="Self.SALE_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SALE_USERS">
+              <PropertyRef Name="USER_ID" />
+            </Principal>
+            <Dependent Role="SALE_DETAIL">
+              <PropertyRef Name="USER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="f_date_m2s" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="char">
+          <Parameter Name="date" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="f_date_s2m" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="datetime">
+          <Parameter Name="date" Type="char" Mode="In" />
+        </Function>
+        <EntityContainer Name="RaadeenSiteModelStoreContainer">
+          <EntitySet Name="COMP_PRODUCT" EntityType="Self.COMP_PRODUCT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="COMPANY" EntityType="Self.COMPANY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCTS" EntityType="Self.PRODUCTS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SALE_DETAIL" EntityType="Self.SALE_DETAIL" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SALE_USERS" EntityType="Self.SALE_USERS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_COMP_PRODUCT_COMPANY" Association="Self.FK_COMP_PRODUCT_COMPANY">
+            <End Role="COMPANY" EntitySet="COMPANY" />
+            <End Role="COMP_PRODUCT" EntitySet="COMP_PRODUCT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COMP_PRODUCT_PRODUCTS" Association="Self.FK_COMP_PRODUCT_PRODUCTS">
+            <End Role="PRODUCTS" EntitySet="PRODUCTS" />
+            <End Role="COMP_PRODUCT" EntitySet="COMP_PRODUCT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COMPANY_SALE_USERS" Association="Self.FK_COMPANY_SALE_USERS">
+            <End Role="SALE_USERS" EntitySet="SALE_USERS" />
+            <End Role="COMPANY" EntitySet="COMPANY" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COMPANY_SALE_USERS1" Association="Self.FK_COMPANY_SALE_USERS1">
+            <End Role="SALE_USERS" EntitySet="SALE_USERS" />
+            <End Role="COMPANY" EntitySet="COMPANY" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SALE_DETAIL_COMP_PRODUCT" Association="Self.FK_SALE_DETAIL_COMP_PRODUCT">
+            <End Role="COMP_PRODUCT" EntitySet="COMP_PRODUCT" />
+            <End Role="SALE_DETAIL" EntitySet="SALE_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SALE_DETAIL_SALE_USERS" Association="Self.FK_SALE_DETAIL_SALE_USERS">
+            <End Role="SALE_USERS" EntitySet="SALE_USERS" />
+            <End Role="SALE_DETAIL" EntitySet="SALE_DETAIL" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RaadeenSiteModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="COMP_PRODUCT">
+          <Key>
+            <PropertyRef Name="COMP_CODE" />
+            <PropertyRef Name="PRD_ID" />
+          </Key>
+          <Property Name="COMP_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PRD_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="COMPANY" Relationship="Self.FK_COMP_PRODUCT_COMPANY" FromRole="COMP_PRODUCT" ToRole="COMPANY" />
+          <NavigationProperty Name="SALE_DETAIL" Relationship="Self.FK_SALE_DETAIL_COMP_PRODUCT" FromRole="COMP_PRODUCT" ToRole="SALE_DETAIL" />
+          <NavigationProperty Name="PRODUCT" Relationship="RaadeenSiteModel.FK_COMP_PRODUCT_PRODUCTS" FromRole="COMP_PRODUCT" ToRole="PRODUCT" />
+        </EntityType>
+        <EntityType Name="COMPANY">
+          <Key>
+            <PropertyRef Name="COMP_CODE" />
+          </Key>
+          <Property Name="COMP_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DESC1" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CEO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="TEL_NO_1" Type="String" MaxLength="15" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="TEL_NO_2" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
+          <Property Name="FAX_NO" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
+          <Property Name="CELL_PHONE" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
+          <Property Name="RESP_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="E_MAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="WEBSITE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ADDRESS" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CONSISTENCE_USER" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="USER_ID" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="COMP_PRODUCT" Relationship="Self.FK_COMP_PRODUCT_COMPANY" FromRole="COMPANY" ToRole="COMP_PRODUCT" />
+          <NavigationProperty Name="SALE_USERS" Relationship="Self.FK_COMPANY_SALE_USERS" FromRole="COMPANY" ToRole="SALE_USERS" />
+          <NavigationProperty Name="SALE_USERS1" Relationship="Self.FK_COMPANY_SALE_USERS1" FromRole="COMPANY" ToRole="SALE_USERS" />
+        </EntityType>
+        <EntityType Name="SALE_DETAIL">
+          <Key>
+            <PropertyRef Name="DET_ID" />
+          </Key>
+          <Property Name="DET_ID" Type="Decimal" Precision="18" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DESC1" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="F_DATE" Type="String" MaxLength="8" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="COMP_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="USER_ID" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PRD_ID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="COMP_PRODUCT" Relationship="Self.FK_SALE_DETAIL_COMP_PRODUCT" FromRole="SALE_DETAIL" ToRole="COMP_PRODUCT" />
+          <NavigationProperty Name="SALE_USERS" Relationship="Self.FK_SALE_DETAIL_SALE_USERS" FromRole="SALE_DETAIL" ToRole="SALE_USERS" />
+          <Property Name="STATE" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="FEE" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="FOLLOW_DATE" Type="String" MaxLength="8" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SALE_USERS">
+          <Key>
+            <PropertyRef Name="USER_ID" />
+          </Key>
+          <Property Name="USER_ID" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PASSWORD" Type="String" MaxLength="25" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SURNAME" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TEL_NO_1" Type="String" MaxLength="15" FixedLength="true" Unicode="true" />
+          <Property Name="CELL_PHONE" Type="String" MaxLength="15" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="NOTE" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="USER_FLAG" Type="String" MaxLength="1" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="UPDATE_DATE" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="COMPANies" Relationship="Self.FK_COMPANY_SALE_USERS" FromRole="SALE_USERS" ToRole="COMPANY" />
+          <NavigationProperty Name="COMPANies1" Relationship="Self.FK_COMPANY_SALE_USERS1" FromRole="SALE_USERS" ToRole="COMPANY" />
+          <NavigationProperty Name="SALE_DETAIL" Relationship="Self.FK_SALE_DETAIL_SALE_USERS" FromRole="SALE_USERS" ToRole="SALE_DETAIL" />
+        </EntityType>
+        <Association Name="FK_COMP_PRODUCT_COMPANY">
+          <End Role="COMPANY" Type="Self.COMPANY" Multiplicity="1" />
+          <End Role="COMP_PRODUCT" Type="Self.COMP_PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMPANY">
+              <PropertyRef Name="COMP_CODE" />
+            </Principal>
+            <Dependent Role="COMP_PRODUCT">
+              <PropertyRef Name="COMP_CODE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SALE_DETAIL_COMP_PRODUCT">
+          <End Role="COMP_PRODUCT" Type="Self.COMP_PRODUCT" Multiplicity="1" />
+          <End Role="SALE_DETAIL" Type="Self.SALE_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMP_PRODUCT">
+              <PropertyRef Name="COMP_CODE" />
+              <PropertyRef Name="PRD_ID" />
+            </Principal>
+            <Dependent Role="SALE_DETAIL">
+              <PropertyRef Name="COMP_CODE" />
+              <PropertyRef Name="PRD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COMPANY_SALE_USERS">
+          <End Role="SALE_USERS" Type="Self.SALE_USERS" Multiplicity="1" />
+          <End Role="COMPANY" Type="Self.COMPANY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SALE_USERS">
+              <PropertyRef Name="USER_ID" />
+            </Principal>
+            <Dependent Role="COMPANY">
+              <PropertyRef Name="USER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COMPANY_SALE_USERS1">
+          <End Role="SALE_USERS" Type="Self.SALE_USERS" Multiplicity="1" />
+          <End Role="COMPANY" Type="Self.COMPANY" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SALE_USERS">
+              <PropertyRef Name="USER_ID" />
+            </Principal>
+            <Dependent Role="COMPANY">
+              <PropertyRef Name="CONSISTENCE_USER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SALE_DETAIL_SALE_USERS">
+          <End Role="SALE_USERS" Type="Self.SALE_USERS" Multiplicity="1" />
+          <End Role="SALE_DETAIL" Type="Self.SALE_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SALE_USERS">
+              <PropertyRef Name="USER_ID" />
+            </Principal>
+            <Dependent Role="SALE_DETAIL">
+              <PropertyRef Name="USER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RaadeenSiteEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="COMP_PRODUCT" EntityType="Self.COMP_PRODUCT" />
+          <EntitySet Name="COMPANies" EntityType="Self.COMPANY" />
+          <EntitySet Name="SALE_DETAIL" EntityType="Self.SALE_DETAIL" />
+          <EntitySet Name="SALE_USERS" EntityType="Self.SALE_USERS" />
+          <AssociationSet Name="FK_COMP_PRODUCT_COMPANY" Association="Self.FK_COMP_PRODUCT_COMPANY">
+            <End Role="COMPANY" EntitySet="COMPANies" />
+            <End Role="COMP_PRODUCT" EntitySet="COMP_PRODUCT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SALE_DETAIL_COMP_PRODUCT" Association="Self.FK_SALE_DETAIL_COMP_PRODUCT">
+            <End Role="COMP_PRODUCT" EntitySet="COMP_PRODUCT" />
+            <End Role="SALE_DETAIL" EntitySet="SALE_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COMPANY_SALE_USERS" Association="Self.FK_COMPANY_SALE_USERS">
+            <End Role="SALE_USERS" EntitySet="SALE_USERS" />
+            <End Role="COMPANY" EntitySet="COMPANies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COMPANY_SALE_USERS1" Association="Self.FK_COMPANY_SALE_USERS1">
+            <End Role="SALE_USERS" EntitySet="SALE_USERS" />
+            <End Role="COMPANY" EntitySet="COMPANies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SALE_DETAIL_SALE_USERS" Association="Self.FK_SALE_DETAIL_SALE_USERS">
+            <End Role="SALE_USERS" EntitySet="SALE_USERS" />
+            <End Role="SALE_DETAIL" EntitySet="SALE_DETAIL" />
+          </AssociationSet>
+          <EntitySet Name="PRODUCTS" EntityType="RaadeenSiteModel.PRODUCT" />
+          <AssociationSet Name="FK_COMP_PRODUCT_PRODUCTS" Association="RaadeenSiteModel.FK_COMP_PRODUCT_PRODUCTS">
+            <End Role="PRODUCT" EntitySet="PRODUCTS" />
+            <End Role="COMP_PRODUCT" EntitySet="COMP_PRODUCT" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="PRODUCT">
+          <Key>
+            <PropertyRef Name="PRD_ID" />
+          </Key>
+          <Property Name="PRD_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="USER_ID" Type="String" Nullable="false" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="SOFT_CODE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SOFT_NAME" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UPDATE_DATE" Type="DateTime" Precision="3" />
+          <Property Name="PRD_PATH" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="PRD_NOTE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FACILITIES" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="COMP_PRODUCT" Relationship="RaadeenSiteModel.FK_COMP_PRODUCT_PRODUCTS" FromRole="PRODUCT" ToRole="COMP_PRODUCT" />
+        </EntityType>
+        <Association Name="FK_COMP_PRODUCT_PRODUCTS">
+          <End Type="RaadeenSiteModel.PRODUCT" Role="PRODUCT" Multiplicity="1" />
+          <End Type="RaadeenSiteModel.COMP_PRODUCT" Role="COMP_PRODUCT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCT">
+              <PropertyRef Name="PRD_ID" />
+            </Principal>
+            <Dependent Role="COMP_PRODUCT">
+              <PropertyRef Name="PRD_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="RaadeenSiteModelStoreContainer" CdmEntityContainer="RaadeenSiteEntities">
+          <EntitySetMapping Name="COMP_PRODUCT">
+            <EntityTypeMapping TypeName="RaadeenSiteModel.COMP_PRODUCT">
+              <MappingFragment StoreEntitySet="COMP_PRODUCT">
+                <ScalarProperty Name="COMP_CODE" ColumnName="COMP_CODE" />
+                <ScalarProperty Name="PRD_ID" ColumnName="PRD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="COMPANies">
+            <EntityTypeMapping TypeName="RaadeenSiteModel.COMPANY">
+              <MappingFragment StoreEntitySet="COMPANY">
+                <ScalarProperty Name="COMP_CODE" ColumnName="COMP_CODE" />
+                <ScalarProperty Name="DESC1" ColumnName="DESC1" />
+                <ScalarProperty Name="CEO" ColumnName="CEO" />
+                <ScalarProperty Name="TEL_NO_1" ColumnName="TEL_NO_1" />
+                <ScalarProperty Name="TEL_NO_2" ColumnName="TEL_NO_2" />
+                <ScalarProperty Name="FAX_NO" ColumnName="FAX_NO" />
+                <ScalarProperty Name="CELL_PHONE" ColumnName="CELL_PHONE" />
+                <ScalarProperty Name="RESP_NAME" ColumnName="RESP_NAME" />
+                <ScalarProperty Name="E_MAIL" ColumnName="E_MAIL" />
+                <ScalarProperty Name="WEBSITE" ColumnName="WEBSITE" />
+                <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+                <ScalarProperty Name="CONSISTENCE_USER" ColumnName="CONSISTENCE_USER" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SALE_DETAIL">
+            <EntityTypeMapping TypeName="RaadeenSiteModel.SALE_DETAIL">
+              <MappingFragment StoreEntitySet="SALE_DETAIL">
+                <ScalarProperty Name="FOLLOW_DATE" ColumnName="FOLLOW_DATE" />
+                <ScalarProperty Name="FEE" ColumnName="FEE" />
+                <ScalarProperty Name="STATE" ColumnName="STATE" />
+                <ScalarProperty Name="DET_ID" ColumnName="DET_ID" />
+                <ScalarProperty Name="DESC1" ColumnName="DESC1" />
+                <ScalarProperty Name="F_DATE" ColumnName="F_DATE" />
+                <ScalarProperty Name="COMP_CODE" ColumnName="COMP_CODE" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+                <ScalarProperty Name="PRD_ID" ColumnName="PRD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SALE_USERS">
+            <EntityTypeMapping TypeName="RaadeenSiteModel.SALE_USERS">
+              <MappingFragment StoreEntitySet="SALE_USERS">
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="NAME" ColumnName="NAME" />
+                <ScalarProperty Name="SURNAME" ColumnName="SURNAME" />
+                <ScalarProperty Name="TEL_NO_1" ColumnName="TEL_NO_1" />
+                <ScalarProperty Name="CELL_PHONE" ColumnName="CELL_PHONE" />
+                <ScalarProperty Name="NOTE" ColumnName="NOTE" />
+                <ScalarProperty Name="USER_FLAG" ColumnName="USER_FLAG" />
+                <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCTS">
+            <EntityTypeMapping TypeName="RaadeenSiteModel.PRODUCT">
+              <MappingFragment StoreEntitySet="PRODUCTS">
+                <ScalarProperty Name="FACILITIES" ColumnName="FACILITIES" />
+                <ScalarProperty Name="PRD_NOTE" ColumnName="PRD_NOTE" />
+                <ScalarProperty Name="PRD_PATH" ColumnName="PRD_PATH" />
+                <ScalarProperty Name="UPDATE_DATE" ColumnName="UPDATE_DATE" />
+                <ScalarProperty Name="SOFT_NAME" ColumnName="SOFT_NAME" />
+                <ScalarProperty Name="SOFT_CODE" ColumnName="SOFT_CODE" />
+                <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+                <ScalarProperty Name="PRD_ID" ColumnName="PRD_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
